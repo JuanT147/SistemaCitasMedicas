@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'Password123') # CAMBIA 'your_i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True' # Esto leerá DEBUG de una variable de entorno.
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.azurewebsites.net']
+ALLOWED_HOSTS = ['citasmedicas-app-gsfucwauffcc7fngp.brazilsouth-01.azurewebsites.net', 'localhost', '127.0.0.1']
 
 
 # Application definition
