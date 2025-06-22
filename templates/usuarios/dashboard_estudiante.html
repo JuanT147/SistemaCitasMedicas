@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard de Estudiante{% endblock %}
+{% block page_title %}Bienvenido, Estudiante {{ estudiante.persona.nombres }} {{ estudiante.persona.apellidos }}{% endblock %}
+
+{% block content %}
+    <p>Tu rol: Estudiante</p>
+    <p>Código de Estudiante: {{ estudiante.codigo_estudiante }}</p>
+    <p>Escuela Profesional: {{ estudiante.get_escuela_profesional_display }}</p>
+    <p>Semestre Académico: {{ estudiante.semestre_academico }}</p>
+
+    <h2>Acciones Rápidas</h2>
+    <ul>
+        <li><a href="{% url 'citas:solicitar_cita' %}">Solicitar nueva cita</a></li>
+        <li><a href="{% url 'citas:mis_citas' %}">Ver mis citas programadas</a></li>
+        <li><a href="#">Ver historial de derivaciones</a></li>
+    </ul>
+{% endblock %}

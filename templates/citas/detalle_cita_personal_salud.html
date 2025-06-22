@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de Cita{% endblock %}
+{% block page_title %}Detalle de Cita con {{ cita.estudiante.persona.nombres }} {{ cita.estudiante.persona.apellidos }}{% endblock %}
+
+{% block content %}
+    <p><strong>Especialidad:</strong> {{ cita.especialidad.nombre }}</p>
+    <p><strong>Fecha:</strong> {{ cita.fecha|date:"d/m/Y" }}</p>
+    <p><strong>Hora:</strong> {{ cita.hora_inicio|time:"h:i A" }} - {{ cita.hora_fin|time:"h:i A" }}</p>
+    <p><strong>Estado:</strong> {{ cita.estado }}</p>
+    <p><strong>Estudiante:</strong> {{ cita.estudiante.persona.nombres }} {{ cita.estudiante.persona.apellidos }} (Código: {{ cita.estudiante.codigo_estudiante }})</p>
+    <p><strong>DNI Estudiante:</strong> {{ cita.estudiante.persona.dni }}</p>
+    <p><strong>Escuela Profesional:</strong> {{ cita.estudiante.get_escuela_profesional_display }}</p>
+    <p><strong>Semestre Académico:</strong> {{ cita.estudiante.semestre_academico }}</p>
+
+    <h3>Acciones sobre la Cita:</h3>
+    <form method="post" style="display: inline-block; margin-right: 10px;">
+        <!--{% csrf_token %}
+        {% if cita.estado == 'Pendiente' %}
+            <button type="submit" name="marcar_atendido" class="btn btn-success">Marcar como Atendido</button>
+            {% if es_directa %}
+                <button type="submit" name="cancelar_cita" class="btn btn-danger">Cancelar Cita</button>
+            {% endif %}
+            #<button type="submit" name="cancelar_cita" class="btn btn-danger">Cancelar Cita</button> 
+        {% else %}
+            <p>Esta cita ya está **{{ cita.estado }}**.</p>
+        {% endif %} 
+        -->
+        {% csrf_token %}
+        {% if cita.estado == 'Pendiente' and es_directa %}
+            <button type="submit" name="marcar_atendido" class="btn btn-success">Marcar como Atendido</button>
+            <button type="submit" name="cancelar_cita" class="btn btn-danger">Cancelar Cita</button>
+        {% elif cita.estado != 'Pendiente' %}
+            <p>Esta cita ya está <strong>{{ cita.estado }}</strong>.</p>
+        {% endif %}
+    </form>
+    {# Bloque para secundarios: muestra el estado de la derivación y el botón #}
+    {% if es_derivada %}
+        {% for derivacion in derivaciones %}
+            {% if derivacion.servicio_destino == personal_salud.especialidad %}
+                <p><strong>Estado de derivación:</strong> {{ derivacion.estado }}</p>
+                {% if derivacion.estado == 'Pendiente' %}
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" name="marcar_atendido" class="btn btn-success">Marcar como Atendida</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    
+    
+    <h3 style="margin-top: 30px;">Derivaciones:</h3>
+
+
+    {% if derivaciones %}
+        <ul>
+            {% for derivacion in derivaciones %}
+                <li>{{ derivacion.servicio_destino.nombre }} ({{ derivacion.fecha_derivacion|date:"d/m/Y H:i" }}) - Observaciones: {{ derivacion.observaciones|default:"N/A" }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay derivaciones para esta cita.</p>
+    {% endif %}
+
+
+    {% if cita.estado == 'Atendido' and es_directa %}
+        <h4>Crear Nueva Derivación:</h4>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="derivar_laboratorio" class="btn btn-warning">Derivar a Laboratorio</button>
+            <button type="submit" name="derivar_farmacia" class="btn btn-warning">Derivar a Farmacia</button>
+        </form>
+    {% endif %}
+
+    <p style="margin-top: 30px;"><a href="{% url 'citas:citas_personal_salud' %}" class="btn">Volver a Citas Asignadas</a></p>
+{% endblock %}

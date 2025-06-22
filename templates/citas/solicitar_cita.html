@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Solicitar Cita Médica{% endblock %}
+{% block page_title %}Solicitar Cita Médica{% endblock %}
+
+{% block content %}
+    <p>Por favor, complete los detalles para su cita.</p>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn">Solicitar Cita</button>
+    </form>
+{% endblock %}

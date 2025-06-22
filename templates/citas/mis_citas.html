@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Citas{% endblock %}
+{% block page_title %}Mis Citas Programadas{% endblock %}
+
+{% block content %}
+    {% if citas %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Especialidad</th>
+                    <th>Personal de Salud</th>
+                    <th>Fecha</th>
+                    <th>Hora Inicio</th>
+                    <th>Hora Fin</th>
+                    <th>Estado</th>
+                    <th>Derivaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in citas %}
+                    <tr>
+                        <td>{{ cita.especialidad.nombre }}</td>
+                        <td>
+                            {% if cita.personal_salud %}
+                                {{ cita.personal_salud.persona.nombres }} {{ cita.personal_salud.persona.apellidos }}
+                            {% else %}
+                                Por asignar
+                            {% endif %}
+                        </td>
+                        <td>{{ cita.fecha|date:"d/m/Y" }}</td>
+                        <td>{{ cita.hora_inicio|time:"h:i A" }}</td>
+                        <td>{{ cita.hora_fin|time:"h:i A" }}</td>
+                        <td>{{ cita.estado }}</td>
+                        <td>
+                            {% for derivacion in cita.derivaciones.all %}
+                                {{ derivacion.servicio_destino.nombre }} ({{ derivacion.fecha_derivacion|date:"d/m/Y" }})<br>
+                            {% empty %}
+                                Ninguna
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tienes citas programadas aún.</p>
+        <p><a href="{% url 'citas:solicitar_cita' %}" class="btn">Solicitar mi primera cita</a></p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Citas Asignadas{% endblock %}
+{% block page_title %}Citas Asignadas - {{ personal_salud.especialidad.nombre }}{% endblock %}
+
+{% block content %}
+    <h2>Citas Pendientes (Hoy y Futuras)</h2>
+    {% if citas_pendientes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Estudiante</th>
+                    <th>Fecha</th>
+                    <th>Hora Inicio</th>
+                    <th>Hora Fin</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in citas_pendientes %}
+                    <tr>
+                        <td>{{ cita.estudiante.persona.nombres }} {{ cita.estudiante.persona.apellidos }} ({{ cita.estudiante.codigo_estudiante }})</td>
+                        <td>{{ cita.fecha|date:"d/m/Y" }}</td>
+                        <td>{{ cita.hora_inicio|time:"h:i A" }}</td>
+                        <td>{{ cita.hora_fin|time:"h:i A" }}</td>
+                        <td>{{ cita.estado }}</td>
+                        <td>
+                            <a href="{% url 'citas:detalle_cita_personal_salud' cita.id %}" class="btn btn-info">Ver Detalle</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tienes citas pendientes para atender.</p>
+    {% endif %}
+
+    <h2 style="margin-top: 40px;">Historial de Citas (Atendidas/Canceladas)</h2>
+    {% if citas_historial %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Estudiante</th>
+                    <th>Fecha</th>
+                    <th>Hora Inicio</th>
+                    <th>Estado</th>
+                    <th>Derivaciones</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in citas_historial %}
+                    <tr>
+                        <td>{{ cita.estudiante.persona.nombres }} {{ cita.estudiante.persona.apellidos }}</td>
+                        <td>{{ cita.fecha|date:"d/m/Y" }}</td>
+                        <td>{{ cita.hora_inicio|time:"h:i A" }}</td>
+                        <td>{{ cita.estado }}</td>
+                        <td>
+                            {% for derivacion in cita.derivaciones.all %}
+                                {{ derivacion.servicio_destino.nombre }}<br>
+                            {% empty %}
+                                Ninguna
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a href="{% url 'citas:detalle_cita_personal_salud' cita.id %}" class="btn btn-info">Ver Detalle</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay citas en tu historial aún.</p>
+    {% endif %}
+{% endblock %}

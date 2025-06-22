@@ -1,0 +1,24 @@
+# Archivos de entorno virtual
+venv/
+.venv/
+env/
+*.env
+.env
+
+# Archivos de Django
+__pycache__/
+*.pyc
+*.sqlite3
+media/
+staticfiles/
+
+# Archivos de Pipenv
+#Pipfile.lock
+
+# Otros
+.DS_Store
+Thumbs.db
+*.log
+*.pot
+*.mo
+.vscode/

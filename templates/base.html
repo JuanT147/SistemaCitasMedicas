@@ -1,0 +1,83 @@
+{# SistemaCitasMedicas/templates/base.html #}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema de Citas Médicas UNSCH{% endblock %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .messages { list-style: none; padding: 0; }
+        .messages li { padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+        .messages .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .messages .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .messages .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .messages .warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; } /* Nuevo para warnings */
+        .form-group { margin-bottom: 15px; }
+        .form-control { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .btn { background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; display: inline-block; text-decoration: none;} /* display inline-block para que los links se vean como botones */
+        .btn:hover { background-color: #0056b3; }
+        .btn-danger { background-color: #dc3545; }
+        .btn-danger:hover { background-color: #c82333; }
+        .btn-success { background-color: #28a745; }
+        .btn-success:hover { background-color: #218838; }
+        .btn-warning { background-color: #ffc107; color: black;}
+        .btn-warning:hover { background-color: #e0a800;}
+
+        nav ul { list-style: none; padding: 0; display: flex; justify-content: space-around; background-color: #333; padding: 10px; border-radius: 4px; margin-bottom: 20px;}
+        nav ul li a { color: white; text-decoration: none; padding: 8px 15px; display: block; }
+        nav ul li a:hover { background-color: #555; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .dashboard-actions { margin-top: 20px; }
+        .dashboard-actions ul { list-style: none; padding: 0; }
+        .dashboard-actions li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{% block page_title %} {% endblock %}</h1>
+            <nav>
+                <ul>
+                    {% if user.is_authenticated %}
+                        {% if user.es_estudiante %}
+                            <li><a href="{% url 'usuarios:dashboard_estudiante' %}">Mi Dashboard</a></li>
+                            <li><a href="{% url 'citas:solicitar_cita' %}">Solicitar Cita</a></li>
+                            <li><a href="{% url 'citas:mis_citas' %}">Mis Citas</a></li>
+                        {% elif user.es_personal_salud %}
+                            <li><a href="{% url 'usuarios:dashboard_personal_salud' %}">Mi Dashboard</a></li>
+                            <li><a href="{% url 'citas:citas_personal_salud' %}">Citas Asignadas</a></li>
+                        {% else %} {# Admin u otros roles #}
+                            <li><a href="{% url 'admin:index' %}">Administración</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'usuarios:logout' %}">Cerrar Sesión</a></li>
+                    {% else %}
+                        <li><a href="{% url 'usuarios:login' %}">Iniciar Sesión</a></li>
+                        <li><a href="{% url 'usuarios:registro_estudiante' %}">Registrarse como Estudiante</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Sistema de Citas Médicas UNSCH</p>
+        </footer>
+    </div>
+</body>
+</html>

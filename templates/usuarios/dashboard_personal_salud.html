@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard de Personal de Salud{% endblock %}
+{% block page_title %}Bienvenido, {{ personal_salud.persona.nombres }} {{ personal_salud.persona.apellidos }}{% endblock %}
+
+{% block content %}
+    <p>Tu rol: Personal de Salud</p>
+    {# Suponiendo que ya definimos la FK a especialidad en PersonalSalud #}
+    {% if personal_salud.especialidad %}
+        <p>Especialidad: {{ personal_salud.especialidad.nombre }}</p>
+    {% else %}
+        <p>Especialidad: No asignada</p>
+    {% endif %}
+
+    <!-- <h2>Citas de Hoy y Próximas</h2> -->
+    <!-- {# Aquí mostraremos las citas cuando implementemos la lógica de citas #} -->
+    <!-- <p>Aún no hay citas para mostrar aquí.</p> -->
+
+    <h2>Acciones Rápidas</h2>
+    <ul>
+        <li><a href="{% url 'citas:citas_personal_salud' %}">Ver citas programadas de mi especialidad</a></li>
+        <li><a href="#">Gestionar derivaciones</a></li>
+    </ul>
+{% endblock %}
