@@ -12,8 +12,6 @@ __pycache__/
 media/
 staticfiles/
 
-# Archivos de Pipenv
-#Pipfile.lock
 
 # Otros
 .DS_Store
