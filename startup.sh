@@ -32,6 +32,11 @@ python SistemaCitasMedicas/manage.py makemigrations --noinput
 python SistemaCitasMedicas/manage.py migrate --noinput
 echo "Migraciones de Django aplicadas."
 # =========================================================================
+# === PASO PARA RECOLECTAR ARCHIVOS ESTÁTICOS ===
+echo "Recolectando archivos estáticos de Django..."
+python manage.py collectstatic --noinput
+echo "Archivos estáticos recolectados."
+# =========================================================================
 # Iniciar Gunicorn con más verbosidad y un timeout más largo
 echo "Iniciando Gunicorn..."
 gunicorn SistemaCitasMedicas.wsgi --bind 0.0.0.0:$PORT --workers 2 --timeout 300 --log-level debug --access-logfile - --error-logfile -
