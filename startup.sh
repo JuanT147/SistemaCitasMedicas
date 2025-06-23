@@ -6,7 +6,7 @@
 
 # Añadir la raíz del proyecto al PYTHONPATH para que Python encuentre 'SistemaCitasMedicas'.
 # `$(pwd)/` se refiere al directorio actual, que en Azure será la raíz del despliegue.
-export PYTHONPATH=$PYTHONPATH:$(pwd)/
+export PYTHONPATH=$PYTHONPATH:$(pwd)/SistemaCitasMedicas
 
 # --- Líneas para depuración (¡Muy importantes ahora!) ---
 echo "--- DEBUG INFO ---"
