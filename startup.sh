@@ -1,18 +1,24 @@
 #!/bin/bash
 
-# Ruta donde Oryx desempaqueta tu aplicación.
-# En tu caso, es /tmp/8ddb1f2f8995e19 o similar.
-# La variable $APP_PATH ya debería contener esto en el entorno de Azure.
-# Si no, $(pwd) debería ser /tmp/xxxxxx.
+# Este script se ejecutará desde la raíz de la aplicación desplegada por Oryx.
+# En Azure, la raíz de la app desplegada es /tmp/xxxxxxx/.
+# Aquí, la carpeta 'SistemaCitasMedicas' (con settings.py) es una subcarpeta directa.
 
-# Añadir la raíz de tu proyecto al PYTHONPATH de forma explícita.
-# Asegurémonos de que el directorio donde manage.py está (y donde reside la carpeta SistemaCitasMedicas)
-# sea incluido en PYTHONPATH.
-export PYTHONPATH="/usr/local/python/site-packages:$PYTHONPATH:$(pwd)"
+# Añadir la raíz del proyecto al PYTHONPATH para que Python encuentre 'SistemaCitasMedicas'.
+# `$(pwd)/` se refiere al directorio actual, que en Azure será la raíz del despliegue.
+export PYTHONPATH=$PYTHONPATH:$(pwd)/
 
-# Puedes añadir un print para depurar y ver el PYTHONPATH actual
-# echo "PYTHONPATH después de setear: $PYTHONPATH"
+# --- Líneas para depuración (¡Muy importantes ahora!) ---
+echo "--- DEBUG INFO ---"
+echo "Directorio actual (pwd): $(pwd)"
+echo "PYTHONPATH (después de añadir): $PYTHONPATH"
+ls -la $(pwd)/ # Lista el contenido de la raíz del despliegue
+ls -la $(pwd)/SistemaCitasMedicas/ # Debería listar wsgi.py, settings.py
+echo "--- END DEBUG INFO ---"
+# --------------------------------------------------------
 
-# Iniciar Gunicorn
-# $PORT es una variable de entorno inyectada por Azure
+# Iniciar Gunicorn.
+# 'SistemaCitasMedicas.wsgi' se refiere al módulo Python (SistemaCitasMedicas/wsgi.py).
+# Como la raíz del proyecto (donde está la carpeta SistemaCitasMedicas/) está en PYTHONPATH,
+# Python lo encontrará correctamente.
 gunicorn SistemaCitasMedicas.wsgi --bind 0.0.0.0:$PORT --workers 2 --timeout 120
