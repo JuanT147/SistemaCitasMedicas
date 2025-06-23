@@ -1,11 +1,9 @@
 #!/bin/bash
-
 echo "--- DEBUG INFO ---"
-echo "Directorio actual (pwd): $(pwd)"
-
-# Paso 1: Asegurarse de que tenemos un entorno virtual y activarlo
-# Oryx ya debería crear 'antenv' y activarlo, pero nos aseguramos
-VIRTUAL_ENV_PATH=$(pwd)/antenv
+echo "Directorio actual (pwd): <span class="math-inline">\(pwd\)"
+\# Paso 1\: Asegurarse de que tenemos un entorno virtual y activarlo
+\# Oryx ya debería crear 'antenv' y activarlo, pero nos aseguramos
+VIRTUAL\_ENV\_PATH\=</span>(pwd)/antenv
 if [ ! -d "$VIRTUAL_ENV_PATH" ]; then
     echo "Creando entorno virtual en $VIRTUAL_ENV_PATH"
     python -m venv "$VIRTUAL_ENV_PATH"
@@ -16,10 +14,11 @@ echo "Entorno virtual activado: $VIRTUAL_ENV_PATH"
 
 # Paso 2: Instalar dependencias directamente con pip
 echo "Instalando dependencias desde Pipfile.lock..."
-pip install -r <(pipenv lock --requirements) # Esto genera un requirements.txt al vuelo y lo instala
+# Esta línea le dice a pipenv que genere un requirements.txt basado en Pipfile.lock y luego pip lo instala
+pip install -r <(pipenv lock --requirements)
 
 # Paso 3: Configurar PYTHONPATH
-export PYTHONPATH=$PYTHONPATH:$(pwd)/SistemaCitasMedicas
+export PYTHONPATH=<span class="math-inline">PYTHONPATH\:</span>(pwd)/SistemaCitasMedicas
 echo "PYTHONPATH (final): $PYTHONPATH"
 
 # Paso 4: Listar el contenido del entorno virtual para verificar Django
