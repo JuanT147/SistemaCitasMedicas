@@ -15,14 +15,14 @@ fi
 source "$VIRTUAL_ENV_PATH/bin/activate"
 echo "Entorno virtual activado: $VIRTUAL_ENV_PATH"
 
-# Paso 2: Asegurar que pipenv esté disponible para generar los requirements
-# Aunque Oryx suele tenerlo, una instalación preventiva no hace daño
+# Paso 2: Asegurar que pipenv esté disponible (ya se instaló, pero es una buena práctica)
 pip install pipenv
 
-# Paso 3: Instalar dependencias directamente con pip usando Pipfile.lock
-echo "Instalando dependencias desde Pipfile.lock..."
-# pipenv lock --requirements genera un archivo requirements.txt temporal que pip instala
-pip install -r <(pipenv lock --requirements)
+# Paso 3: Generar requirements.txt desde Pipfile.lock y luego instalarlo
+echo "Generando requirements.txt desde Pipfile.lock e instalando dependencias..."
+# Redirigir la salida de 'pipenv requirements' a un archivo temporal y luego instalarlo con pip
+pipenv requirements > requirements.txt
+pip install -r requirements.txt
 
 # Paso 4: Configurar PYTHONPATH (esto ya lo tenías y es correcto)
 export PYTHONPATH=$PYTHONPATH:$(pwd)/SistemaCitasMedicas
