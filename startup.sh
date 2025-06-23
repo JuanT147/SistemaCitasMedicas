@@ -1,13 +1,17 @@
 #!/bin/bash
 
-# Aseguramos que el script sea ejecutable y que Gunicorn use el PORT de Azure
-# Primero, cambiamos al directorio donde Oryx ha desempaquetado nuestra aplicación.
-# Esta ruta temporal la podemos obtener de la variable de entorno ORYX_BUILD_SOURCE
-# o directamente de los logs que nos muestran '/tmp/8ddb1f1dce72680' como App path.
-# Lo más seguro es usar el directorio de trabajo actual que es donde el startup.sh se ejecuta.
+# Ruta donde Oryx desempaqueta tu aplicación.
+# En tu caso, es /tmp/8ddb1f2f8995e19 o similar.
+# La variable $APP_PATH ya debería contener esto en el entorno de Azure.
+# Si no, $(pwd) debería ser /tmp/xxxxxx.
 
-# Añadir el directorio actual (que será /tmp/xxxxxx/ donde está manage.py) al PYTHONPATH
-export PYTHONPATH=$PYTHONPATH:$(pwd)
+# Añadir la raíz de tu proyecto al PYTHONPATH de forma explícita.
+# Asegurémonos de que el directorio donde manage.py está (y donde reside la carpeta SistemaCitasMedicas)
+# sea incluido en PYTHONPATH.
+export PYTHONPATH="/usr/local/python/site-packages:$PYTHONPATH:$(pwd)"
+
+# Puedes añadir un print para depurar y ver el PYTHONPATH actual
+# echo "PYTHONPATH después de setear: $PYTHONPATH"
 
 # Iniciar Gunicorn
 # $PORT es una variable de entorno inyectada por Azure
