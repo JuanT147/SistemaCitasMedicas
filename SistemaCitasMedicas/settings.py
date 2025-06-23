@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'SistemaCitasMedicas.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+DATABASE_URL = os.environ.get('DATABASE_URL')
 DATABASES = {
     'default': {
         # Esta es una configuración base que será sobrescrita.
@@ -85,13 +85,19 @@ DATABASES = {
     }
 }
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
-
 if DATABASE_URL:
     DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
     DATABASES['default']['OPTIONS'] = {
         'sslmode': 'require',
     }
+    # --- AÑADIR ESTAS LÍNEAS DE DEPURACIÓN TEMPORALES ---
+    print("DEBUG: DATABASE_URL cargada.")
+    print(f"DEBUG: DB ENGINE: {DATABASES['default'].get('ENGINE')}")
+    print(f"DEBUG: DB NAME: {DATABASES['default'].get('NAME')}")
+    print(f"DEBUG: DB USER: {DATABASES['default'].get('USER')}")
+    print(f"DEBUG: DB HOST: {DATABASES['default'].get('HOST')}")
+    print(f"DEBUG: DB PORT: {DATABASES['default'].get('PORT')}")
+    print(f"DEBUG: DB OPTIONS: {DATABASES['default'].get('OPTIONS')}")
 else:
     # Configuración para el entorno de desarrollo local
     DATABASES['default'] = {
@@ -102,6 +108,7 @@ else:
         'HOST': 'localhost',
         'PORT': '5432',
     }
+    print("DEBUG: Usando base de datos local.")
 
 
 # Password validation
