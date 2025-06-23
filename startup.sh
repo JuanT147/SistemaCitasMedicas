@@ -32,15 +32,6 @@ python SistemaCitasMedicas/manage.py makemigrations --noinput
 python SistemaCitasMedicas/manage.py migrate --noinput
 echo "Migraciones de Django aplicadas."
 # =========================================================================
-# === PASO PARA CREAR SUPERUSUARIO (TEMPORAL) ===
-echo "Creando superusuario de Django (si no existe)..."
-# Usa variables de entorno para el nombre de usuario y contraseña para no hardcodearlos
-# Asegúrate de configurar DJANGO_SUPERUSER_USERNAME y DJANGO_SUPERUSER_PASSWORD
-# como variables de entorno en Azure App Service -> Configuración -> Configuración de la aplicación
-python SistemaCitasMedicas/manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email admin@example.com || true
-# La parte "|| true" es para que el script no falle si el superusuario ya existe.
-echo "Intento de creación de superusuario finalizado."
-# =========================================================================
 # Iniciar Gunicorn con más verbosidad y un timeout más largo
 echo "Iniciando Gunicorn..."
 gunicorn SistemaCitasMedicas.wsgi --bind 0.0.0.0:$PORT --workers 2 --timeout 300 --log-level debug --access-logfile - --error-logfile -
