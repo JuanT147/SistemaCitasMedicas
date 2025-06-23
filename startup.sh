@@ -21,4 +21,4 @@ echo "--- END DEBUG INFO ---"
 # 'SistemaCitasMedicas.wsgi' se refiere al módulo Python (SistemaCitasMedicas/wsgi.py).
 # Como la raíz del proyecto (donde está la carpeta SistemaCitasMedicas/) está en PYTHONPATH,
 # Python lo encontrará correctamente.
-gunicorn SistemaCitasMedicas.wsgi --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+gunicorn SistemaCitasMedicas.wsgi --bind 0.0.0.0:$PORT --workers 2 --timeout 300 --log-level debug --access-logfile - --error-logfile -
