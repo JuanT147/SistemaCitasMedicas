@@ -38,6 +38,8 @@ jobs:
       
       - name: Run Django Migrations and Collect Static
         run: |
+          echo "Checking DATABASE_URL environment variable..."
+          echo "DATABASE_URL value: $DATABASE_URL" # Esta es la línea clave
           python manage.py migrate --noinput
           python manage.py collectstatic --noinput
         env:
