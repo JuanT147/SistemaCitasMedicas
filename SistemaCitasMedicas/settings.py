@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'rwh%jbntkhf243gy9#cw1v&)y&*#ec
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True' # Esto leerá DEBUG de una variable de entorno.
 
 ALLOWED_HOSTS = ['citasmedicas-app-gsfucwaufcc7fngp.brazilsouth-01.azurewebsites.net', 'localhost', '127.0.0.1']
-
+CSRF_TRUSTED_ORIGINS = ['https://citasmedicas-app-gsfucwaufcc7fngp.brazilsouth-01.azurewebsites.net']
 
 # Application definition
 
