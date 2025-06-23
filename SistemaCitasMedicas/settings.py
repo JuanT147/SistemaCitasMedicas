@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'Password123') # CAMBIA 'your_insecure_default_key' por una clave segura temporal para desarrollo. ¡En Azure la configuraremos!
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'rwh%jbntkhf243gy9#cw1v&)y&*#ecpiu17(_9!en_(2r79k#3') # CAMBIA 'your_insecure_default_key' por una clave segura temporal para desarrollo. ¡En Azure la configuraremos!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True' # Esto leerá DEBUG de una variable de entorno.
